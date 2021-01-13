@@ -104,3 +104,4 @@ dist
 .tern-port
 
 ./src/fire.js
+src/fire.js

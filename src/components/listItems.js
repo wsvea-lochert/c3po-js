@@ -19,12 +19,12 @@ export const mainListItems = (
         </ListItem>
     </Link>
 
-    <Link to="/Datasets">
+    <Link to="/UploadFiles">
     <ListItem button>
       <ListItemIcon>
         <StorageIcon />
       </ListItemIcon>
-      <ListItemText primary="Datasets" />
+      <ListItemText primary="Upload" />
     </ListItem>
     </Link>
   </div>
@@ -32,14 +32,6 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Edit files</ListSubheader>
-    <Link to="/UploadFiles">
-      <ListItem button>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="Upload data" />
-      </ListItem>
-    </Link>
+    
   </div>
 );

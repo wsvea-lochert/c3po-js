@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import DataTiles from './DataTiles'
 
 
 const drawerWidth = 240;
@@ -86,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
     },
     fixedHeight: {
-      height: 240,
+      height: 1000,
     },
   }));
 
@@ -105,27 +106,35 @@ const Dash = () => {
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
-                {/* Chart */}
+                {/* Dataset tiles */}
                 <Grid item xs={12} md={8} lg={9}>
                 <Paper className={fixedHeightPaper}>
                     {/* Render datasets here*/}
-                    <h2>Datasets from firebase</h2>
+                  <h2>Datasets</h2>
+                  <Grid container spacing={2}>
+                    <Grid item xs={4} md={4} lg={4}>  
+                        <DataTiles/>  
+                    </Grid>
+                    <Grid item xs={4} md={4} lg={4}>
+                      <DataTiles/>
+                    </Grid>
+                    <Grid item xs={3} md={3} lg={3}>
+                    <DataTiles/>
+                    </Grid>
+                  </Grid>
                 </Paper>
                 </Grid>
-                {/* Recent Deposits */}
+
+
+
+                {/* Progress */}
                 <Grid item xs={12} md={4} lg={3}>
                 <Paper className={fixedHeightPaper}>
                     {/* Render something here */}
-                    <h2>data</h2>
+                    <h2>Progress</h2>
                 </Paper>
                 </Grid>
-                {/* Recent Orders */}
-                <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                    <h2>data</h2>
-                    {/* Render something else here */}
-                </Paper>
-                </Grid>
+                
             </Grid>
             <Box pt={4}>
                 

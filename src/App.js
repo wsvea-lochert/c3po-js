@@ -10,6 +10,7 @@ import Datasets from "./components/Datasets"
 //import Nav from "./components/Nav";
 
 import './App.css';
+import UploadFiles from './components/UploadFiles';
 
 function App(){
   return (
@@ -19,6 +20,7 @@ function App(){
           <div >
             <PrivateRoute exact path="/" component={Home} />
             <PrivateRoute path="/Datasets" component={Datasets} />
+            <PrivateRoute path="/UploadFiles" component={UploadFiles}/>
             <Route exact path="/Login" component={Login} />
           </div>
         </Router>

@@ -32,12 +32,14 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Labeled datasets</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Greenscreen" />
-    </ListItem>
+    <ListSubheader inset>Edit files</ListSubheader>
+    <Link to="/UploadFiles">
+      <ListItem button>
+        <ListItemIcon>
+          <AssignmentIcon />
+        </ListItemIcon>
+        <ListItemText primary="Upload data" />
+      </ListItem>
+    </Link>
   </div>
 );

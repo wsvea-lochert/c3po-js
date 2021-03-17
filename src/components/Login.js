@@ -135,24 +135,3 @@ const Login = ( {history} ) => {
 }
 
 export default withRouter(Login);
-
-
-/*
-      <section className="login">
-          <div className="loginContainer">
-            <h1>C3-PO</h1>
-            <form onSubmit={handleLogin}>
-              <label>Username</label>
-              <input name="email" type="email" type="text" autoFocus required placeholder="Email"></input>
-
-              <label>Password</label>
-              <input name="password" placeholder="Password" type="password" required></input>
-
-              <div className="btnContainer">
-                <button id="login-btn" type="submit">Sign in</button>
-              </div>
-            </form>
-          </div>
-            
-      </section>
-*/

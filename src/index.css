@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#inbtn {
+  margin: 1em 1em 0em 0em;
+}
+
+#addbtn{
+  margin: 1.2em 1em 1em 1em;
+}
+
+#uploadTxt {
+  color: #3f51b5;
+}
+
+a {
+  text-decoration: none;
+  color: #3f51b5;
+}

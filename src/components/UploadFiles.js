@@ -1,5 +1,6 @@
-import React from 'react';
-import Nav from './Nav';
+import React, {useState} from 'react';
+import {storage} from "../fire"
+import Nav from "./Nav";
 
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +8,6 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-
 
 const drawerWidth = 240;
 
@@ -88,14 +88,58 @@ const useStyles = makeStyles((theme) => ({
     fixedHeight: {
       height: 240,
     },
+    upImgHeight: {
+        height: 300
+    },
   }));
 
-const Dash = () => {
+  // add functionallity to upload multiple files. 
+const UploadFiles = () => {
 
-    const pageName = "C3P0"
+    const pageName = "Upload data"
     const classes = useStyles();
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const fixedImgHeight = clsx(classes.paper, classes.upImgHeight)
+
+    // Move to a helper file to handle logic there
+    const allInputs = {imgUrl: ''}
+        const [imageAsFile, setImageAsFile] = useState('')
+        const [imageAsUrl, setImageAsUrl] = useState(allInputs)
+        
+        console.log(imageAsFile)
+        const handleImageAsFile = (e) => {
+            const image = e.target.files[0]
+            setImageAsFile(imageFile => (image))
+        }
+    
+        const handleFirebaseUpload = e => {
+            e.preventDefault()
+            console.log('start of upload')
+            
+            if(imageAsFile === ''){
+                console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)
+            }
+
+            const uploadTask = storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
+
+            //initiates the firebase side uploading 
+            uploadTask.on('state_changed', 
+            (snapShot) => {
+            //takes a snap shot of the process as it is happening
+            console.log(snapShot)
+            }, (err) => {
+            //catches the errors
+            console.log(err)
+            }, () => {
+            // gets the functions from storage refences the image storage in firebase by the children
+            // gets the download url then sets the image from firebase as the value for the imgUrl key:
+            storage.ref('images').child(imageAsFile.name).getDownloadURL()
+            .then(fireBaseUrl => {
+                setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+            })
+            })
+        }
 
     return (
         //remember classes.root to wrap elements witin the same div
@@ -106,26 +150,30 @@ const Dash = () => {
             <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
                 {/* Chart */}
-                <Grid item xs={12} md={8} lg={9}>
+                <Grid item xs={12} md={12} lg={12}>
                 <Paper className={fixedHeightPaper}>
-                    {/* Render datasets here*/}
-                    <h2>Datasets from firebase</h2>
+                    {/* Render here*/
+                    <h2>Upload files</h2>
+                    }
+                    <div className="upload-field">
+                        <p>Some generic text about uploading files and their formats :)</p>
+                        Choose file: <input type="file" onChange={handleImageAsFile}/> 
+                        <div>
+                        <button onClick={handleFirebaseUpload}>Upload file</button>   
+                        </div>
+                    </div>
+                    
+                    
                 </Paper>
                 </Grid>
-                {/* Recent Deposits */}
-                <Grid item xs={12} md={4} lg={3}>
-                <Paper className={fixedHeightPaper}>
-                    {/* Render something here */}
-                    <h2>data</h2>
+
+                <Grid item xs={12} md={12} lg={12}>
+                <Paper className={fixedImgHeight}>
+                    {}
+                    <img width="200" height="200" src={imageAsUrl.imgUrl}/> {/* TODO: remove if url === ''*/}
                 </Paper>
                 </Grid>
-                {/* Recent Orders */}
-                <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                    <h2>data</h2>
-                    {/* Render something else here */}
-                </Paper>
-                </Grid>
+                
             </Grid>
             <Box pt={4}>
                 
@@ -136,11 +184,4 @@ const Dash = () => {
     )
 }
 
-export default Dash;
-
-/*
-<section className="hero">
-            <Nav />
-            <h2>Dashboard</h2>
-        </section>
-*/
+export default UploadFiles;

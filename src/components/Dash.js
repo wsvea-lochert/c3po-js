@@ -177,10 +177,3 @@ const Dash = () => {
 }
 
 export default Dash;
-
-/*
-<section className="hero">
-            <Nav />
-            <h2>Dashboard</h2>
-        </section>
-*/

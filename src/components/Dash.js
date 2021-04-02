@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
+import {storage, database} from '../fire'
 
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,9 +9,12 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import DataTiles from './DataTiles'
+import Button from '@material-ui/core/Button';
 
 
 const drawerWidth = 240;
+var storageRef = storage.ref();
+// var databaseRef = database.ref()
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -91,6 +95,28 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+async function datasets() {
+  database.ref("datasets").get().then(function(snapshot) {
+    if (snapshot.exists()) {
+      console.log(snapshot.val());
+      
+      snapshot.forEach(function(childSnapshot){
+        var key = childSnapshot.key;
+        console.log("key: ", key)
+        var childData = childSnapshot.val();  // treat childData as an object so childData.dir_name returns object name
+        console.log("data: ", childData)
+      })
+      // TODO: create tiles for each dataset that comes from snapshot.
+
+    }
+    else {
+      console.log("No data available");
+    }
+  }).catch(function(error) {
+    console.error(error);
+  });
+}
+
 const Dash = () => {
 
     const pageName = "C3P0"
@@ -109,7 +135,9 @@ const Dash = () => {
                 {/* Dataset tiles */}
                 <Grid item xs={12} md={8} lg={9}>
                 <Paper className={fixedHeightPaper}>
-                    {/* Render datasets here*/}
+                    {/* Render datasets here*/
+                    
+                    }
                   <h2>Datasets</h2>
                   <Grid container spacing={2}>
                     <Grid item xs={4} md={4} lg={4}>  
@@ -121,9 +149,12 @@ const Dash = () => {
                     <Grid item xs={3} md={3} lg={3}>
                     <DataTiles/>
                     </Grid>
+                    
                   </Grid>
+                  <Button size="small" onClick={datasets}>Click me</Button>
                 </Paper>
                 </Grid>
+                
 
 
 

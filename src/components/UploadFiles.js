@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {storage} from "../fire"
+import {storage, database} from "../fire"
 import Nav from "./Nav";
+import fire from '../fire'
 
 
 import clsx from 'clsx';
@@ -128,6 +129,27 @@ const UploadFiles = () => {
     const [directory, setDirectory] = useState('') // use to create new directory to firebase storage
     // console.log(directory.newDir)
 
+    function writeDir(dirName){
+      //console.log('current userid: ', fire.auth().currentUser.uid)  // log the curret user that is logged in to the system
+      let uid = fire.auth().currentUser.uid  // current user id
+      database.ref('datasets').child(dirName).get().then(function(snapshot) {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+        }
+        else {
+          console.log("No data available, writing new data.");
+          // write new dir here
+          //console.log(currentUser)
+          console.log(dirName)
+          database.ref('datasets').child(dirName).set({
+            dir_name: dirName
+          });
+        }
+      }).catch(function(error) {
+        console.error(error);
+      });
+    }
+
     const onFileChange = e => {
       setProg(0)
       setCount(0)
@@ -136,42 +158,61 @@ const UploadFiles = () => {
           newFile["id"] = Math.random();
       // add an "id" property to each File object
           setFiles(prevState => [...prevState, newFile]);
-        }
-      };
+      }
+      
+    };
 
-     const uploadFiles = e => {
-       // setProg(0)
-       setFilesLen(files.length)  // setting the length for counting with progress bar
-       e.preventDefault();
-       const promises = [];
+    const uploadFiles = e => {
+      // setProg(0)
+      setFilesLen(files.length)  // setting the length for counting with progress bar
+      e.preventDefault();
+      const promises = [];
+      // var urlList = []
+      const names = []
 
-       files.forEach(file => {
-         let uploadTask = storage.ref(`${directory.newDir}/${file.name}`).put(file)
-         promises.push(uploadTask);
-         uploadTask.on('state_changed', (snapshot) => {
-           var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-           setProg(progress)
-           setCount(progress)
-           console.log('Upload progress is: ' + progress + '%');
-           
-           
-         },
-         (error => {
-           // error handeling of unsuccessful uploads
-         },
-         () => {
-           Promise.all(promises)
-           .then(() => console.log('All files are uploaded!'))
-           .catch(err => console.log(err.code))
-         }))
-       })
-     }
+      files.forEach(file => {
+        let uploadTask = storage.ref(`${directory.newDir}/${file.name}`).put(file)
+        promises.push(uploadTask);
+        uploadTask.on('state_changed', (snapshot) => {
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setProg(progress)
+          setCount(progress)
+          console.log('Upload progress is: ' + progress + '%');
+          if(!names.includes(file.name)){
+          names.push(file.name)
+          } 
+        },
+        (error) => {
+          // error handeling of unsuccessful uploads
+          console.log('ugh, an erros has hit you in the face: ', error)
+        },
+        () => {
+          //console.log(files)
+          Promise.all(promises)
+          .then(() => console.log('All files are uploaded!'))
+          .catch(err => console.log(err.code))
 
-     const createNewDir = data => { 
-        console.log('dette er verdien', data)  // nå logger den, men verdien er tom, endra fran input til button, men plutselig så stopper den opp å gir feilmeldinger om input
-        
-        setDirectory(data) // denna jeg vil ha variabelen til så jeg kan bruke den senere
-     }
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          console.log('File available at', downloadURL)
+          database.ref('datasets').child(directory.newDir).child('download_links').push(downloadURL)
+          });
+          //console.log('Uploading urls', urlList)
+          database.ref('datasets').child(directory.newDir).update({
+            // download_links: urlList,
+            file_info: names
+          });
+          
+        }) 
+      })
+      //console.log('outside loop: ',urlList)
+    }
+
+    const createNewDir = data => { 
+      console.log('dette er verdien', data.newDir)  // nå logger den, men verdien er tom, endra fran input til button, men plutselig så stopper den opp å gir feilmeldinger om input
+      setDirectory(data)
+      writeDir(data.newDir)
+    }
+
     return (
         //remember classes.root to wrap elements witin the same div
         <div className={classes.root}>

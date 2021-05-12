@@ -1,6 +1,7 @@
-import React from 'react';
-//import fire from '../fire'
+import React, { useEffect, useState } from 'react';
 import Nav from "./Nav";
+import {storage, database} from '../fire'
+
 
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +9,17 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+
+/*
+TODO list:
+1. database.ref('datasets').child('dir_name of dataset') -> to get the specific datasets we are looking for
+2. name of dir can be collected from the URL.
+3. load the first image onto the site
+4. implement marking tool (either create one from scratch or use a pre-built one)
+5. write data to real-time databse for each image in specific format
+6. download data in json format (images too?)
+*/
 
 
 const drawerWidth = 240;
@@ -106,27 +118,14 @@ function Datasets(){
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
-                {/* Chart */}
-                <Grid item xs={12} md={8} lg={9}>
+                {/* Remove the paper? */}
+                <Grid item xs={12} md={12} lg={12}>
                 <Paper className={fixedHeightPaper}>
                     {/* Render datasets here*/}
                     <h2>data</h2>
                 </Paper>
                 </Grid>
-                {/* Recent Deposits */}
-                <Grid item xs={12} md={4} lg={3}>
-                <Paper className={fixedHeightPaper}>
-                    {/* Render something here */}
-                    <h2>data</h2>
-                </Paper>
-                </Grid>
-                {/* Recent Orders */}
-                <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                    <h2>data</h2>
-                    {/* Render something else here */}
-                </Paper>
-                </Grid>
+
             </Grid>
             <Box pt={4}>
                 

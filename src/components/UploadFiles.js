@@ -142,7 +142,8 @@ const UploadFiles = () => {
           //console.log(currentUser)
           console.log(dirName)
           database.ref('datasets').child(dirName).set({
-            dir_name: dirName
+            dir_name: dirName,
+            progress: 0
           });
         }
       }).catch(function(error) {
@@ -201,6 +202,9 @@ const UploadFiles = () => {
             // download_links: urlList,
             file_info: names
           });
+          database.ref('datasets').child(directory.newDir).update({
+            total_data: names.length
+          })
           
         }) 
       })

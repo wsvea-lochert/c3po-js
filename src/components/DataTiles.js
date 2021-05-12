@@ -16,10 +16,16 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import getDatasets from './Dash'
 
+import LinearProgress from '@material-ui/core/LinearProgress';
+import {Link} from 'react-router-dom'
+
 /*
 1. Add props for adaptive/responsive content
 2. Add automatic generating cards in Dash.js file
 3. Add redirect from button to new page (use dataset.js file) for editing images
+4. Make each dataset page 'unique' to specific dataset
+5. database.ref('datasets').child('dir_name of dataset') -> to get the specific datasets we are looking for
+6. name of dir can be collected from the URL in Datasets.js
 */
 
 const useStyles = makeStyles({
@@ -39,7 +45,7 @@ const useStyles = makeStyles({
   },
 });
 
-function DataTiles(){
+function DataTiles(props){
     //const pageName = "Placeholder"
 
     const classes = useStyles();
@@ -50,23 +56,20 @@ function DataTiles(){
     return (
         <Card className={classes.root}>
         <CardContent>
-            <Typography className={classes.title} color="textSecondary" gutterBottom>
-            Word of the Day
-            </Typography>
             <Typography variant="h5" component="h2">
-            be{bull}nev{bull}o{bull}lent
+            {props.name}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
-            adjective
-            </Typography>
-            <Typography variant="body2" component="p">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
+
+            <LinearProgress color="primary" variant="determinate" value={props.progress} />
+
+            {props.progress + '%'}
             </Typography>
         </CardContent>
         <CardActions>
-            <Button size="small">Learn More</Button>
+          <Link to={"/Datasets/" + props.name}>
+            <Button variant="contained" color="primary" size="small">Go To dataset</Button>
+          </Link>
         </CardActions>
         </Card>
     );

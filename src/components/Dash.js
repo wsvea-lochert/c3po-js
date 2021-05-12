@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Nav from './Nav';
 import {storage, database} from '../fire'
 
@@ -12,10 +12,15 @@ import DataTiles from './DataTiles'
 import Button from '@material-ui/core/Button';
 
 
+// TODO: clean up code and move functionallity to new file
+
 const drawerWidth = 240;
 var storageRef = storage.ref();
+
+
 // var databaseRef = database.ref()
 
+// use styles for styling the page.
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -95,29 +100,42 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-async function datasets() {
-  database.ref("datasets").get().then(function(snapshot) {
-    if (snapshot.exists()) {
-      console.log(snapshot.val());
-      
-      snapshot.forEach(function(childSnapshot){
-        var key = childSnapshot.key;
-        console.log("key: ", key)
-        var childData = childSnapshot.val();  // treat childData as an object so childData.dir_name returns object name
-        console.log("data: ", childData)
-      })
-      // TODO: create tiles for each dataset that comes from snapshot.
+// async function to get the datasets from firebase real-time database.
+// <Button size="small" onClick={datasets}>Click me</Button>
 
-    }
-    else {
-      console.log("No data available");
-    }
-  }).catch(function(error) {
-    console.error(error);
-  });
-}
+
 
 const Dash = () => {
+
+  const [list, setList] = useState();
+
+    async function datasets() {
+      database.ref("datasets").get().then(function(snapshot) {
+        if (snapshot.exists()) {
+          // console.log(snapshot.val());
+          var jsonDatasets = [] 
+    
+          
+          snapshot.forEach((childSnapshot) => {
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();  // use childData as an object so childData.dir_name returns object name
+            console.log('ChildData: ', childData)
+            jsonDatasets.push(childData)
+          })
+          console.log(jsonDatasets)
+          setList(jsonDatasets)
+          
+          
+        }
+        else {
+          console.log("No data available");
+        }
+      }).catch(function(error) {
+        console.error(error);
+      });
+    }
+
+    datasets() // just calling the datasets function to render the DataTiles
 
     const pageName = "C3P0"
     const classes = useStyles();
@@ -131,45 +149,31 @@ const Dash = () => {
             <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-            <Grid container spacing={3}>
-                {/* Dataset tiles */}
-                <Grid item xs={12} md={8} lg={9}>
+            <Grid container spacing={0} xs={12} md={12} lg={12}>
                 <Paper className={fixedHeightPaper}>
+                <Grid item xs={12} md={12} lg={12}>
+                
                     {/* Render datasets here*/
                     
                     }
-                  <h2>Datasets</h2>
-                  <Grid container spacing={2}>
-                    <Grid item xs={4} md={4} lg={4}>  
-                        <DataTiles/>  
+                    <Grid container spacing={2}>
+                    <h2>Datasets</h2>
+                    {list?.map((item, index) =>(
+                      <Grid key={item.dir_name} item xs={12} md={12} lg={12}> 
+                        <DataTiles name={item.dir_name} progress={(item.progress / item.total_data)*100} download_links={item.download_links} file_info={item.file_info}/>
+                      </Grid>
+                    ))}
                     </Grid>
-                    <Grid item xs={4} md={4} lg={4}>
-                      <DataTiles/>
-                    </Grid>
-                    <Grid item xs={3} md={3} lg={3}>
-                    <DataTiles/>
-                    </Grid>
-                    
+
+                  
+                  
                   </Grid>
-                  <Button size="small" onClick={datasets}>Click me</Button>
-                </Paper>
-                </Grid>
                 
-
-
-
-                {/* Progress */}
-                <Grid item xs={12} md={4} lg={3}>
-                <Paper className={fixedHeightPaper}>
-                    {/* Render something here */}
-                    <h2>Progress</h2>
+                
                 </Paper>
-                </Grid>
+                
                 
             </Grid>
-            <Box pt={4}>
-                
-            </Box>
             </Container>
         </main>
       </div>

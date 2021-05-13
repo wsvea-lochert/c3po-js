@@ -109,6 +109,8 @@ const Dash = () => {
 
   const [list, setList] = useState();
 
+  
+
     async function datasets() {
       database.ref("datasets").get().then(function(snapshot) {
         if (snapshot.exists()) {
@@ -122,7 +124,7 @@ const Dash = () => {
             console.log('ChildData: ', childData)
             jsonDatasets.push(childData)
           })
-          console.log(jsonDatasets)
+          //console.log(jsonDatasets)
           setList(jsonDatasets)
           
           
@@ -135,7 +137,9 @@ const Dash = () => {
       });
     }
 
-    datasets() // just calling the datasets function to render the DataTiles
+    useEffect(() => {
+      datasets()
+    }, [])  
 
     const pageName = "C3P0"
     const classes = useStyles();

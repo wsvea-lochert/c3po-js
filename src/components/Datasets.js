@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import { Switch, Route, useParams } from 'react-router';
 
 /*
 TODO list:
@@ -103,12 +104,52 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+
+
 function Datasets(){
     const pageName = "Datasets"
-
     const classes = useStyles();
-
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+    const [dataList, setDataList] = useState();
+    const [url, setUrl] = useState(null);
+
+    // function for getting the correct part of the URL for getting the database catalog
+    function getUrl(){
+      let url = window.location.href;
+      var parser = document.createElement('a');
+      parser.href = url;
+      let catalog = parser.pathname.split('/');
+      // return catalog[2];
+      setUrl(catalog[2]);
+    }
+    
+    async function getData(dir) {
+      database.ref("datasets").child(dir).get().then(function(snapshot){
+        if(snapshot.exists()){
+          //console.log('snapshot value: ', snapshot.val())
+          let data = snapshot.val()
+          setDataList(data)
+          console.log('Data collected from real-time database: ', dataList)
+        }
+        else{
+          console.log("No data available, check firebase or catalog name")
+        }
+      })
+    }
+
+    useEffect(() => {
+      if(url === null){
+        getUrl()
+        // getData(url) | dont call this here due to some issue?
+      }
+      else{
+        console.log('logging in useeffect: ', url)
+        getData(url)
+      }
+      
+      //console.log('logging in useeffect: ', url)
+    }, [url])
 
     return (
         //remember classes.root to wrap elements witin the same div
@@ -123,6 +164,9 @@ function Datasets(){
                 <Paper className={fixedHeightPaper}>
                     {/* Render datasets here*/}
                     <h2>data</h2>
+
+                    
+
                 </Paper>
                 </Grid>
 

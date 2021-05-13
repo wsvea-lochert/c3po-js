@@ -4,21 +4,16 @@ import {storage, database} from '../fire'
 
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import DataTiles from './DataTiles'
-import Button from '@material-ui/core/Button';
 
 
 // TODO: clean up code and move functionallity to new file
 
 const drawerWidth = 240;
-var storageRef = storage.ref();
-
-
-// var databaseRef = database.ref()
+//var storageRef = storage.ref();
 
 // use styles for styling the page.
 const useStyles = makeStyles((theme) => ({
@@ -100,10 +95,6 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-// async function to get the datasets from firebase real-time database.
-// <Button size="small" onClick={datasets}>Click me</Button>
-
-
 
 const Dash = () => {
 
@@ -114,20 +105,15 @@ const Dash = () => {
     async function datasets() {
       database.ref("datasets").get().then(function(snapshot) {
         if (snapshot.exists()) {
-          // console.log(snapshot.val());
           var jsonDatasets = [] 
-    
-          
+  
           snapshot.forEach((childSnapshot) => {
-            var key = childSnapshot.key;
+            // var key = childSnapshot.key;
             var childData = childSnapshot.val();  // use childData as an object so childData.dir_name returns object name
             console.log('ChildData: ', childData)
             jsonDatasets.push(childData)
           })
-          //console.log(jsonDatasets)
           setList(jsonDatasets)
-          
-          
         }
         else {
           console.log("No data available");

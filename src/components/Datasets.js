@@ -16,6 +16,7 @@ import { Switch, Route, useParams } from 'react-router';
 TODO list:
 1. database.ref('datasets').child('dir_name of dataset') -> to get the specific datasets we are looking for
 2. name of dir can be collected from the URL.
+------------------------------------------------------
 3. load the first image onto the site
 4. implement marking tool (either create one from scratch or use a pre-built one)
 5. write data to real-time databse for each image in specific format
@@ -106,13 +107,16 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function Datasets(){
+const Datasets = () => {
     const pageName = "Datasets"
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-    const [dataList, setDataList] = useState();
-    const [url, setUrl] = useState(null);
+    const [downloadLinks, setDownloadLinks] = useState(); // objects | use map to extract?
+    const [fileInfo, setFileInfo] = useState();           // Array of strings.
+    const [progress, setProgress] = useState();           // integer to track the marking progress of the dataset.
+
+    const [url, setUrl] = useState();                     // Url to get the dataset.
 
     // function for getting the correct part of the URL for getting the database catalog
     function getUrl(){
@@ -120,36 +124,44 @@ function Datasets(){
       var parser = document.createElement('a');
       parser.href = url;
       let catalog = parser.pathname.split('/');
-      // return catalog[2];
-      setUrl(catalog[2]);
+      setUrl(catalog[2]); // not nessesary but a backup
+      return catalog[2];
     }
     
-    async function getData(dir) {
+    // functon for collecting the correct dataset for the current page.
+    async function getData() {
+      // Get catalog from URL
+      let dir = getUrl();
+      // connect to real-time database to get the dataset
       database.ref("datasets").child(dir).get().then(function(snapshot){
         if(snapshot.exists()){
-          //console.log('snapshot value: ', snapshot.val())
-          let data = snapshot.val()
-          setDataList(data)
-          console.log('Data collected from real-time database: ', dataList)
+          // Setting the useStates to that the values can be used later.
+          setDownloadLinks(snapshot.val().download_links)
+          setFileInfo(snapshot.val().file_info)
+          setProgress(snapshot.val().progress)
         }
         else{
           console.log("No data available, check firebase or catalog name")
         }
-      })
+      }).catch(function(error){
+        console.error(error)
+      });
+    }
+
+    function parseData() {
+      // logging to check if the data is there
+      console.log('----------- useStates -----------')
+      console.log('Download links: ', downloadLinks)
+      console.log('File info:', fileInfo)
+      console.log('progress: ', progress)
+      console.log('---------------------------------')
+      
     }
 
     useEffect(() => {
-      if(url === null){
-        getUrl()
-        // getData(url) | dont call this here due to some issue?
-      }
-      else{
-        console.log('logging in useeffect: ', url)
-        getData(url)
-      }
-      
-      //console.log('logging in useeffect: ', url)
-    }, [url])
+      getData();
+      parseData();
+    }, [])
 
     return (
         //remember classes.root to wrap elements witin the same div
@@ -164,9 +176,7 @@ function Datasets(){
                 <Paper className={fixedHeightPaper}>
                     {/* Render datasets here*/}
                     <h2>data</h2>
-
-                    
-
+                    <Button variant="contained" color="primary" onClick={parseData}></Button>
                 </Paper>
                 </Grid>
 

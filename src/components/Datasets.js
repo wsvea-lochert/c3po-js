@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Switch, Route, useParams } from 'react-router';
+import ImageMarker from './ImageMarker'
 
 /*
 TODO list:
@@ -99,9 +100,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       overflow: 'auto',
       flexDirection: 'column',
+      width: 'auto'
     },
     fixedHeight: {
-      height: 240,
+      height: 'auto', //controll this
     },
   }));
 
@@ -112,11 +114,20 @@ const Datasets = () => {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+    // States for initial snapshot extraction from firebase
     const [downloadLinks, setDownloadLinks] = useState(); // objects | use map to extract?
     const [fileInfo, setFileInfo] = useState();           // Array of strings.
     const [progress, setProgress] = useState();           // integer to track the marking progress of the dataset.
+    
+    // clean image links
+    const [images, setImages] = useState();
 
+    // controller states
     const [url, setUrl] = useState();                     // Url to get the dataset.
+    const [dataLoaded, setDataLoaded] = useState(false);  // Check if the data is loaded or not
+
+    //counter
+    const [counter, setCounter] = useState(0);
 
     // function for getting the correct part of the URL for getting the database catalog
     function getUrl(){
@@ -125,6 +136,7 @@ const Datasets = () => {
       parser.href = url;
       let catalog = parser.pathname.split('/');
       setUrl(catalog[2]); // not nessesary but a backup
+      console.log('Current catalog is: ', catalog[2])
       return catalog[2];
     }
     
@@ -139,6 +151,7 @@ const Datasets = () => {
           setDownloadLinks(snapshot.val().download_links)
           setFileInfo(snapshot.val().file_info)
           setProgress(snapshot.val().progress)
+          
         }
         else{
           console.log("No data available, check firebase or catalog name")
@@ -148,7 +161,7 @@ const Datasets = () => {
       });
     }
 
-    function parseData() {
+    function showData() {
       // logging to check if the data is there
       console.log('----------- useStates -----------')
       console.log('Download links: ', downloadLinks)
@@ -156,12 +169,38 @@ const Datasets = () => {
       console.log('progress: ', progress)
       console.log('---------------------------------')
       
+      //console.log(Object.keys(downloadLinks)); 
+    }
+
+    function showDownloadLinks(){
+      if(dataLoaded){
+        setImages(Object.values(downloadLinks));
+      }
+      else{
+        console.log('Data is not loaded into states!')
+      }
     }
 
     useEffect(() => {
       getData();
-      parseData();
     }, [])
+
+    useEffect(() => {
+      if(downloadLinks === undefined || fileInfo === undefined || progress === undefined){
+        console.log('one is undefined')
+        return;
+      }
+      else{
+        showData()
+        setDataLoaded(true) 
+
+        if(dataLoaded){
+          showDownloadLinks();
+        }
+      }
+    }, [downloadLinks, fileInfo, progress, dataLoaded])
+
+    images?.sort();
 
     return (
         //remember classes.root to wrap elements witin the same div
@@ -169,14 +208,37 @@ const Datasets = () => {
             <Nav page={pageName}/> 
             <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
+            {/*<Container maxWidth="lg" className={classes.container}>*/}
             <Grid container spacing={3}>
                 {/* Remove the paper? */}
                 <Grid item xs={12} md={12} lg={12}>
                 <Paper className={fixedHeightPaper}>
-                    {/* Render datasets here*/}
-                    <h2>data</h2>
-                    <Button variant="contained" color="primary" onClick={parseData}></Button>
+                  {fileInfo?.length > 0 && (
+                    <span>{fileInfo[counter]}</span>
+                  )}
+                  
+                  {images?.length > 0 && (
+                    <>
+                    <Button variant="contained" color="primary" size="small" disabled={counter===0} onClick={() => setCounter(counter-1)}>Prev</Button> <br/>
+                    <Button variant="contained" color="primary" size="small" disabled={counter===images?.length-1} onClick={() => setCounter(counter+1)}>Next</Button>
+                    <ImageMarker image={images[counter]} image_name={fileInfo[counter]}/>
+                    
+                    
+                    </>
+                  )}
+                  
+                  {
+                    
+                    /*
+                      h2 with file info here
+
+                      <new image component (send single image as prop)>
+                      
+                      buttons here.
+                    
+                    */
+                  }
+
                 </Paper>
                 </Grid>
 
@@ -184,7 +246,7 @@ const Datasets = () => {
             <Box pt={4}>
                 
             </Box>
-            </Container>
+           {/* </Container>*/}
         </main>
       </div>
     );

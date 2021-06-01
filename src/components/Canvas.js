@@ -71,6 +71,7 @@ const Canvas = props => {
         ctx.stroke()
       
     }
+
     
     useEffect(() => {
         

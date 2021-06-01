@@ -26,8 +26,11 @@ import Canvas from './Canvas';
 3. draw the points on the canvas
 4. upload the data to firebase real time database by pressing 's' on the keyboard or save button
 5. if the image is previously marked pull that information from firebase and populate states (canvas will automaticly draw the given points)
+6. TODO: if image has not been marked in firebase, set all cord states to 0,0, so that markers are moved.
 6. implement tensorflow js for later use.
 */
+
+//TODO: if image has not been marked in firebase, set all cord states to 0,0, so that markers are moved.
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -72,9 +75,6 @@ function ImageMarker(props){
 
     const [spacing, setSpacing] = React.useState(2);
     const classes = useStyles();
-
-    var xList = [];
-    var yList = [];
     
     
     const [cordinates, setCordinates] = useState({x: 0, y: 0}); // live coordinates of the mouse pointer
@@ -97,12 +97,6 @@ function ImageMarker(props){
     const [right_knee, setRight_knee] = useState({right_knee: {x: 0, y: 0}});
     const [right_ankle, setRight_ankle] = useState({right_ankle: {x: 0, y: 0}});
 
-
-    function DrawCoordinate(xCoord, yCood, jointName){
-        
-        
-    }
-
     
     //function for setting the correct joint.
     function jointClicked(e){
@@ -110,12 +104,6 @@ function ImageMarker(props){
         switch(selectedJoint){
             case 'left_wrist':
                 setLeft_writ({left_wrist: {x: Math.ceil(e.nativeEvent.offsetX/(500/224)), y: Math.ceil(e.nativeEvent.offsetY/(500/224))}})
-                
-                xList.push(e.nativeEvent.offsetX/(500/224))
-                yList.push(e.nativeEvent.offsetY/(500/224))
-                
-                DrawCoordinate(e.nativeEvent.offsetX/(500/224), e.nativeEvent.offsetY/(500/224), 'left_wrist')
-
                 break;
             case 'left_elbow':
                 setLeft_elbow({left_elbow: {x: Math.ceil(e.nativeEvent.offsetX/(500/224)), y: Math.ceil(e.nativeEvent.offsetY/(500/224))}})
@@ -179,7 +167,7 @@ function ImageMarker(props){
 
                             <div style={outsideWrapper}>
                                 <div style={insideWrapper}>
-                                    <img style={coveredImage} id='image' src={props.image}  onMouseDown={jointClicked}/>
+                                    <img style={coveredImage} id='image' src={props.image}  onMouseDown={jointClicked} />
                                     <Canvas className='coveringCanvas' style={canvasStyle} onMouseDown={jointClicked} onMouseMove={onHover} lw={left_wrist} le={left_elbow} ls={left_shoulder} n={neck} 
                                                                                                                                             h={head} rw={right_writs} re={right_elbow} rs={right_shoulder}
                                                                                                                                             t={torso} lh={left_hip} lk={left_knee} la={left_ankle} rh={right_hip}

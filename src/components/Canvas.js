@@ -63,13 +63,22 @@ const Canvas = props => {
     }
 
     const drawLines = (ctx, xCord1, yCord1, xCord2, yCord2) => {
-      
         ctx.strokeStyle = '#44ff00'
         ctx.beginPath()
         ctx.moveTo(xCord1, yCord1)
         ctx.lineTo(xCord2, yCord2)
         ctx.stroke()
-      
+    }
+
+    const drawBoundryBox = (ctx, xCord1, yCord1, xCord2, yCord2) => {
+        ctx.strokeStyle = '#44ff00'
+        ctx.beginPath()
+        ctx.moveTo(xCord1, yCord1)
+        ctx.lineTo(xCord1, yCord2)
+        ctx.lineTo(xCord2, yCord2)
+        ctx.lineTo(xCord2, yCord1)
+        ctx.lineTo(xCord1, yCord1)
+        ctx.stroke()
     }
 
     
@@ -99,6 +108,10 @@ const Canvas = props => {
             draw(context, props.ra.right_ankle?.x, props.ra.right_ankle?.y, 'r_ankle')
             draw(context, props.rh.right_hip?.x, props.rh.right_hip?.y, 'r_hip')
 
+            //boundry box points
+            draw(context, props.tl.topLeft?.x, props.tl.topLeft?.y, 'tl')
+            draw(context, props.br.bottomRight?.x, props.br.bottomRight?.y, 'br')
+
             //drawing lines between the joints
             drawLines(context, props.lw.left_wrist?.x, props.lw.left_wrist?.y, props.le.left_elbow?.x, props.le.left_elbow?.y)
             drawLines(context, props.le.left_elbow?.x, props.le.left_elbow?.y, props.ls.left_shoulder?.x, props.ls.left_shoulder?.y)
@@ -114,6 +127,8 @@ const Canvas = props => {
             drawLines(context, props.lk.left_knee?.x, props.lk.left_knee?.y, props.la.left_ankle?.x, props.la.left_ankle?.y)
             drawLines(context, props.rh.right_hip?.x, props.rh.right_hip?.y, props.rk.right_knee?.x, props.rk.right_knee?.y)
             drawLines(context, props.rk.right_knee?.x, props.rk.right_knee?.y, props.ra.right_ankle?.x, props.ra.right_ankle?.y)
+
+            drawBoundryBox(context, props.tl.topLeft?.x, props.tl.topLeft?.y, props.br.bottomRight?.x, props.br.bottomRight?.y)
         }
         render()
       

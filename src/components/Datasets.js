@@ -221,7 +221,7 @@ const Datasets = () => {
                     <>
                     <Button variant="contained" color="primary" size="small" disabled={counter===0} onClick={() => setCounter(counter-1)}>Prev</Button> <br/>
                     <Button variant="contained" color="primary" size="small" disabled={counter===images?.length-1} onClick={() => setCounter(counter+1)}>Next</Button>
-                    <ImageMarker image={images[counter]} image_name={fileInfo[counter]}/>
+                    <ImageMarker image={images[counter]} image_name={fileInfo[counter]} imgCounter={counter}/>
                     
                     
                     </>

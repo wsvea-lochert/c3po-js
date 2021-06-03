@@ -131,7 +131,7 @@ const UploadFiles = () => {
 
     function writeDir(dirName){
       //console.log('current userid: ', fire.auth().currentUser.uid)  // log the curret user that is logged in to the system
-      let uid = fire.auth().currentUser.uid  // current user id
+      let uid = fire.auth().currentUser.uid  // current user id (for later use)
       database.ref('datasets').child(dirName).get().then(function(snapshot) {
         if (snapshot.exists()) {
           console.log(snapshot.val());

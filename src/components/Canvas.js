@@ -38,6 +38,7 @@ const Canvas = props => {
         ctx.beginPath()
         ctx.arc(xCord, yCord, 3, 0, 2 * Math.PI);
         ctx.stroke();
+        
         ctx.font = "bold 6px Arial";
         ctx.fillStyle = "red";
 
@@ -63,22 +64,34 @@ const Canvas = props => {
     }
 
     const drawLines = (ctx, xCord1, yCord1, xCord2, yCord2) => {
-        ctx.strokeStyle = '#44ff00'
-        ctx.beginPath()
-        ctx.moveTo(xCord1, yCord1)
-        ctx.lineTo(xCord2, yCord2)
-        ctx.stroke()
+        if((xCord1 == 0 && yCord1 == 0) || (xCord2 == 0 && yCord2 == 0)){
+            return
+        }
+        else{
+            ctx.strokeStyle = '#44ff00'
+            ctx.beginPath()
+            ctx.moveTo(xCord1, yCord1)
+            ctx.lineTo(xCord2, yCord2)
+            ctx.stroke()
+        }
+        
     }
 
     const drawBoundryBox = (ctx, xCord1, yCord1, xCord2, yCord2) => {
-        ctx.strokeStyle = '#44ff00'
-        ctx.beginPath()
-        ctx.moveTo(xCord1, yCord1)
-        ctx.lineTo(xCord1, yCord2)
-        ctx.lineTo(xCord2, yCord2)
-        ctx.lineTo(xCord2, yCord1)
-        ctx.lineTo(xCord1, yCord1)
-        ctx.stroke()
+        if((xCord1 == 0 && yCord1 == 0) || (xCord2 == 0 && yCord2 == 0)){
+            return
+        }
+        else{
+            ctx.strokeStyle = '#44ff00'
+            ctx.beginPath()
+            ctx.moveTo(xCord1, yCord1)
+            ctx.lineTo(xCord1, yCord2)
+            ctx.lineTo(xCord2, yCord2)
+            ctx.lineTo(xCord2, yCord1)
+            ctx.lineTo(xCord1, yCord1)
+            ctx.stroke()
+        }
+        
     }
 
     

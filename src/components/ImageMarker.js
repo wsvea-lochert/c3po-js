@@ -50,14 +50,17 @@ const useStyles = makeStyles((theme) => ({
 
 function ImageMarker(props){
     //const pageName = "Placeholder"
+
+    const [canvasHeight, setCanvasHeight] = useState(500);
+
     const canvasStyle = {
-        width: "500px", height:"500px", 
+        width: "500px", height: canvasHeight, // original 500x500
         position:"absolute", top:"0px", left:"0px",
         backgroundColor: "rgba(2,0,0,.1)",
     }
 
     const coveredImage = {
-        width:"500px", height:"500px", 
+        width:"500px", height:canvasHeight, 
         position:"absolute", top:"0px", left:"0px",
     }
 
@@ -99,6 +102,33 @@ function ImageMarker(props){
 
     const [topLeft, setLeft] = useState({topLeft: {x: 0, y: 0}});
     const [bottomRight, setRight] = useState({bottomRight: {x: 0, y: 0}});
+
+    // function for flipping the right and the left side arms and leg joints
+    function flip(){
+        let tmpLe = {x: left_elbow.left_elbow?.x, y: left_elbow.left_elbow?.y}
+        let tmpLw = {x: left_wrist.left_wrist?.x, y: left_wrist.left_wrist?.y}
+        let tmpLs = {x: left_shoulder.left_shoulder?.x, y: left_shoulder.left_shoulder?.y}
+        let tmpLa = {x: left_ankle.left_ankle?.x, y: left_ankle.left_ankle?.y}
+        let tmpLk = {x: left_knee.left_knee?.x, y: left_knee.left_knee?.y}
+        let tmpLh = {x: left_hip.left_hip?.x, y: left_hip.left_hip?.y}
+
+        setLeft_writ({left_wrist: {x: right_writs.right_writs?.x, y: right_writs.right_writs?.y}})
+        setLeft_elbow({left_elbow: {x: right_elbow.right_elbow?.x, y: right_elbow.right_elbow?.y}})
+        setLeft_shoulder({left_shoulder: {x: right_shoulder.right_shoulder?.x, y: right_shoulder.right_shoulder?.y}})
+        setLeft_hip({left_hip: {x: right_hip.right_hip?.x, y: right_hip.right_hip?.y}})
+        setleft_knee({left_knee: {x: right_knee.right_knee?.x, y: right_knee.right_knee?.y}})
+        setLeft_ankle({left_ankle: {x: right_ankle.right_ankle?.x, y: right_ankle.right_ankle?.y}})
+        
+                
+        setRight_shoulder({right_shoulder: {x: tmpLs.x, y: tmpLs.y}})
+        setRight_elbow({right_elbow: {x: tmpLe.x, y: tmpLe.y}})
+        setRight_writs({right_writs: {x: tmpLw.x, y: tmpLw.y}})
+        setRight_hip({right_hip: {x: tmpLh.x, y: tmpLh.y}})
+        setRight_knee({right_knee: {x: tmpLk.x, y: tmpLk.y}})
+        setRight_ankle({right_ankle: {x: tmpLa.x, y: tmpLa.y}})
+
+        
+    }
     
 
     
@@ -152,10 +182,11 @@ function ImageMarker(props){
                 setRight_ankle({right_ankle: {x: Math.ceil(e.nativeEvent.offsetX/(500/224)), y: Math.ceil(e.nativeEvent.offsetY/(500/224))}})
                 break;
             case 'topLeft':
-                setLeft({topLeft: {x: Math.ceil(e.nativeEvent.offsetX/(500/224)), y: Math.ceil(e.nativeEvent.offsetY/(500/224))}});
+                setLeft({topLeft: {x: 0, y: Math.ceil(e.nativeEvent.offsetY)}});
+                setRight({bottomRight: {x: 500, y: Math.ceil(e.nativeEvent.offsetY+500)}});
                 break;
             case 'bottomRight':
-                setRight({bottomRight: {x: Math.ceil(e.nativeEvent.offsetX/(500/224)), y: Math.ceil(e.nativeEvent.offsetY/(500/224))}});
+                setRight({bottomRight: {x: Math.ceil(e.nativeEvent.offsetX), y: Math.ceil(e.nativeEvent.offsetY)}});
                 break;
         }
     }
@@ -289,6 +320,115 @@ function ImageMarker(props){
 
     }
 
+    function getPreviousPose(){
+        let previous_pose = props.prev_pose
+
+        console.log(previous_pose)
+
+        setLeft_writ({left_wrist: {x: previous_pose.left_wrist?.x, y: previous_pose.left_wrist?.y}})
+        setLeft_elbow({left_elbow: {x: previous_pose.left_elbow?.x, y: previous_pose.left_elbow?.y}})
+        setLeft_shoulder({left_shoulder: {x: previous_pose.left_shoulder?.x, y: previous_pose.left_shoulder?.y}})
+        setLeft_hip({left_hip: {x: previous_pose.left_hip?.x, y: previous_pose.left_hip?.y}})
+        setleft_knee({left_knee: {x: previous_pose.left_knee?.x, y: previous_pose.left_knee?.y}})
+        setLeft_ankle({left_ankle: {x: previous_pose.left_ankle?.x, y: previous_pose.left_ankle?.y}})
+        
+        setTorso({torso: {x: previous_pose.torso?.x, y: previous_pose.torso?.y}})
+        setNeck({neck: {x: previous_pose.neck?.x, y: previous_pose.neck?.y}})
+        setHead({head: {x: previous_pose.head?.x, y: previous_pose.head?.y}})
+        
+                
+        setRight_shoulder({right_shoulder: {x: previous_pose.right_shoulder?.x, y: previous_pose.right_shoulder?.y}})
+        setRight_elbow({right_elbow: {x: previous_pose.right_elbow?.x, y: previous_pose.right_elbow?.y}})
+        setRight_writs({right_writs: {x: previous_pose.right_writs?.x, y: previous_pose.right_writs?.y}})
+        setRight_hip({right_hip: {x: previous_pose.right_hip?.x, y: previous_pose.right_hip?.y}})
+        setRight_knee({right_knee: {x: previous_pose.right_knee?.x, y: previous_pose.right_knee?.y}})
+        setRight_ankle({right_ankle: {x: previous_pose.right_ankle?.x, y: previous_pose.right_ankle?.y}})
+
+    }
+
+
+    
+
+    function moveUp(){
+        setLeft_elbow({left_elbow: {x: left_elbow.left_elbow?.x, y: left_elbow.left_elbow?.y-1}})
+        setLeft_shoulder({left_shoulder: {x: left_shoulder.left_shoulder?.x, y: left_shoulder.left_shoulder?.y-1}})
+        setLeft_ankle({left_ankle: {x: left_ankle.left_ankle?.x, y: left_ankle.left_ankle?.y-1}})
+        setleft_knee({left_knee: {x: left_knee.left_knee?.x, y: left_knee.left_knee?.y-1}})
+        setLeft_hip({left_hip: {x: left_hip.left_hip?.x, y: left_hip.left_hip?.y-1}})
+        setLeft_writ({left_wrist: {x: left_wrist.left_wrist.x, y: left_wrist.left_wrist.y-1}})
+
+        setRight_elbow({right_elbow: {x: right_elbow.right_elbow?.x, y: right_elbow.right_elbow?.y-1}})
+        setRight_shoulder({right_shoulder: {x: right_shoulder.right_shoulder?.x, y: right_shoulder.right_shoulder?.y-1}})
+        setRight_ankle({right_ankle: {x: right_ankle.right_ankle?.x, y: right_ankle.right_ankle?.y-1}})
+        setRight_knee({right_knee: {x: right_knee.right_knee?.x, y: right_knee.right_knee?.y-1}})
+        setRight_hip({right_hip: {x: right_hip.right_hip?.x, y: right_hip.right_hip?.y-1}})
+        setRight_writs({right_writs: {x: right_writs.right_writs.x, y: right_writs.right_writs.y-1}})
+
+        setHead({head: {x: head.head.x, y: head.head.y-1}})
+        setTorso({torso: {x: torso.torso.x, y: torso.torso.y-1}})
+        setNeck({neck: {x: neck.neck.x, y: neck.neck.y-1}})
+    }
+    
+    function moveDown(){
+        setLeft_elbow({left_elbow: {x: left_elbow.left_elbow?.x, y: left_elbow.left_elbow?.y+1}})
+        setLeft_shoulder({left_shoulder: {x: left_shoulder.left_shoulder?.x, y: left_shoulder.left_shoulder?.y+1}})
+        setLeft_ankle({left_ankle: {x: left_ankle.left_ankle?.x, y: left_ankle.left_ankle?.y+1}})
+        setleft_knee({left_knee: {x: left_knee.left_knee?.x, y: left_knee.left_knee?.y+1}})
+        setLeft_hip({left_hip: {x: left_hip.left_hip?.x, y: left_hip.left_hip?.y+1}})
+        setLeft_writ({left_wrist: {x: left_wrist.left_wrist.x, y: left_wrist.left_wrist.y+1}})
+
+        setRight_elbow({right_elbow: {x: right_elbow.right_elbow?.x, y: right_elbow.right_elbow?.y+1}})
+        setRight_shoulder({right_shoulder: {x: right_shoulder.right_shoulder?.x, y: right_shoulder.right_shoulder?.y+1}})
+        setRight_ankle({right_ankle: {x: right_ankle.right_ankle?.x, y: right_ankle.right_ankle?.y+1}})
+        setRight_knee({right_knee: {x: right_knee.right_knee?.x, y: right_knee.right_knee?.y+1}})
+        setRight_hip({right_hip: {x: right_hip.right_hip?.x, y: right_hip.right_hip?.y+1}})
+        setRight_writs({right_writs: {x: right_writs.right_writs.x, y: right_writs.right_writs.y+1}})
+
+        setHead({head: {x: head.head.x, y: head.head.y+1}})
+        setTorso({torso: {x: torso.torso.x, y: torso.torso.y+1}})
+        setNeck({neck: {x: neck.neck.x, y: neck.neck.y+1}})
+    }
+
+    function moveLeft(){
+        setLeft_elbow({left_elbow: {x: left_elbow.left_elbow?.x-1, y: left_elbow.left_elbow?.y}})
+        setLeft_shoulder({left_shoulder: {x: left_shoulder.left_shoulder?.x-1, y: left_shoulder.left_shoulder?.y}})
+        setLeft_ankle({left_ankle: {x: left_ankle.left_ankle?.x-1, y: left_ankle.left_ankle?.y}})
+        setleft_knee({left_knee: {x: left_knee.left_knee?.x-1, y: left_knee.left_knee?.y}})
+        setLeft_hip({left_hip: {x: left_hip.left_hip?.x-1, y: left_hip.left_hip?.y}})
+        setLeft_writ({left_wrist: {x: left_wrist.left_wrist.x-1, y: left_wrist.left_wrist.y}})
+
+        setRight_elbow({right_elbow: {x: right_elbow.right_elbow?.x-1, y: right_elbow.right_elbow?.y}})
+        setRight_shoulder({right_shoulder: {x: right_shoulder.right_shoulder?.x-1, y: right_shoulder.right_shoulder?.y}})
+        setRight_ankle({right_ankle: {x: right_ankle.right_ankle?.x-1, y: right_ankle.right_ankle?.y}})
+        setRight_knee({right_knee: {x: right_knee.right_knee?.x-1, y: right_knee.right_knee?.y}})
+        setRight_hip({right_hip: {x: right_hip.right_hip?.x-1, y: right_hip.right_hip?.y}})
+        setRight_writs({right_writs: {x: right_writs.right_writs.x-1, y: right_writs.right_writs.y}})
+
+        setHead({head: {x: head.head.x-1, y: head.head.y}})
+        setTorso({torso: {x: torso.torso.x-1, y: torso.torso.y}})
+        setNeck({neck: {x: neck.neck.x-1, y: neck.neck.y}})
+    }
+
+    function moveRight(){
+        setLeft_elbow({left_elbow: {x: left_elbow.left_elbow?.x+1, y: left_elbow.left_elbow?.y}})
+        setLeft_shoulder({left_shoulder: {x: left_shoulder.left_shoulder?.x+1, y: left_shoulder.left_shoulder?.y}})
+        setLeft_ankle({left_ankle: {x: left_ankle.left_ankle?.x+1, y: left_ankle.left_ankle?.y}})
+        setleft_knee({left_knee: {x: left_knee.left_knee?.x+1, y: left_knee.left_knee?.y}})
+        setLeft_hip({left_hip: {x: left_hip.left_hip?.x+1, y: left_hip.left_hip?.y}})
+        setLeft_writ({left_wrist: {x: left_wrist.left_wrist.x+1, y: left_wrist.left_wrist.y}})
+
+        setRight_elbow({right_elbow: {x: right_elbow.right_elbow?.x+1, y: right_elbow.right_elbow?.y}})
+        setRight_shoulder({right_shoulder: {x: right_shoulder.right_shoulder?.x+1, y: right_shoulder.right_shoulder?.y}})
+        setRight_ankle({right_ankle: {x: right_ankle.right_ankle?.x+1, y: right_ankle.right_ankle?.y}})
+        setRight_knee({right_knee: {x: right_knee.right_knee?.x+1, y: right_knee.right_knee?.y}})
+        setRight_hip({right_hip: {x: right_hip.right_hip?.x+1, y: right_hip.right_hip?.y}})
+        setRight_writs({right_writs: {x: right_writs.right_writs.x+1, y: right_writs.right_writs.y}})
+
+        setHead({head: {x: head.head.x+1, y: head.head.y}})
+        setTorso({torso: {x: torso.torso.x+1, y: torso.torso.y}})
+        setNeck({neck: {x: neck.neck.x+1, y: neck.neck.y}})
+    }
+
     useEffect(() => {
         getData();
         //console.log(props.image_name)
@@ -304,23 +444,33 @@ function ImageMarker(props){
 
                             <div style={outsideWrapper}>
                                 <div style={insideWrapper}>
-                                    <img style={coveredImage} id='image' src={props.image}  onMouseDown={jointClicked} />
+                                    <img style={coveredImage} id='image' src={props.image}  onMouseDown={jointClicked}/>
                                     <Canvas className='coveringCanvas' style={canvasStyle} onMouseDown={jointClicked} onMouseMove={onHover} lw={left_wrist} le={left_elbow} ls={left_shoulder} n={neck} 
                                                                                                                                             h={head} rw={right_writs} re={right_elbow} rs={right_shoulder}
                                                                                                                                             t={torso} lh={left_hip} lk={left_knee} la={left_ankle} rh={right_hip}
-                                                                                                                                            rk={right_knee} ra={right_ankle} tl={topLeft} br={bottomRight}/>
+                                                                                                                                            rk={right_knee} ra={right_ankle} tl={topLeft} br={bottomRight}
+                                                                                                                                            ch={canvasHeight}/>
                                 </div>
                                 
                                 <h3>selected joint: ({selectedJoint})</h3>
                                 <h3>current coordinates: (x{Math.ceil(cordinates?.x)}, y{Math.ceil(cordinates?.y)})</h3>
-                                <Button color='primary' variant="contained" onClick={saveData}>save</Button>
+                                <Button color='primary' variant="contained" onClick={saveData}>save</Button> <br/> <br/>
+                               { /*<Button color='primary' variant="contained" onClick={() => setCanvasHeight(500)}>500</Button> <br/><br/>*/}
+                                {/*<Button color='primary' variant="contained" onClick={() => setCanvasHeight(729)}>729</Button>*/}
+                                <Button color='primary' variant="contained" onClick={flip}>flip joints</Button>
+                                <Button color='primary' variant="contained" onClick={getPreviousPose}>Get previous pose</Button> <br></br><br></br>
+                                <Button color='primary' variant="contained" onClick={moveUp}>move up</Button><br></br> <br></br>
+                                
+                                <Button color='primary' variant="contained" onClick={moveLeft}>move left</Button>
+                                <Button color='primary' variant="contained" onClick={moveRight}>move right</Button><br></br><br></br>
+                                <Button color='primary' variant="contained" onClick={moveDown}>move down</Button>
                             </div>
                             
                             <br/>
                             
                         </Paper>
                     </Grid>
-                    <Grid item xs={12} md={5} lg={5}>
+                    <Grid item xs={12} md={5} lg={6}>
                         <Paper className={classes.paper} style={{margin: "60px 0px", padding: " 10px"}}>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={12} lg={12}>
@@ -341,10 +491,26 @@ function ImageMarker(props){
                                     <Button color='primary' variant="contained" onClick={() => setJoint('right_knee')}>right_knee</Button> <span> x,y: ({right_knee.right_knee?.x}, {right_knee.right_knee?.y})</span><br/> <br/>
                                     <Button color='primary' variant="contained" onClick={() => setJoint('right_ankle')}>right_ankle</Button> <span> x,y: ({right_ankle.right_ankle?.x}, {right_ankle.right_ankle?.y})</span><br/> <br/>
 
-                                    <Button color='primary' variant="contained" onClick={() => setJoint('topLeft')}>topLeft</Button> <span>topLeft: x,y: ({topLeft.topLeft?.x}, {topLeft.topLeft?.y})</span><br/> <br/>
-                                    <Button color='primary' variant="contained" onClick={() => setJoint('bottomRight')}>bottomRight</Button> <span> x,y: ({bottomRight.bottomRight?.x}, {bottomRight.bottomRight?.y})</span><br/> <br/>
+                                   {/* <Button color='primary' variant="contained" onClick={() => setJoint('topLeft')}>topLeft</Button> <span>topLeft: x,y: ({topLeft.topLeft?.x}, {topLeft.topLeft?.y})</span><br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setJoint('bottomRight')}>bottomRight</Button> <span> x,y: ({bottomRight.bottomRight?.x}, {bottomRight.bottomRight?.y})</span><br/> <br/> */}
                                 </Grid>
                             </Grid>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <Paper>
+                                    <Button color='primary' variant="contained" onClick={() => setLeft_writ({left_wrist: {x:0, y:0}})}>0 left_wrist</Button>  <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setLeft_elbow({left_elbow: {x: 0, y: 0}})}>0 left_elbow</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setLeft_shoulder({left_shoulder: {x:0, y:0}})}>0 left_shoulder</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setRight_shoulder({right_shoulder: {x:0, y:0}})}>0 right_shoulder</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setRight_elbow({right_elbow: {x:0, y:0}})}>0 right_elbow</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setRight_writs({right_writs: {x: 0, y: 0}})}>0 right_writs</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setLeft_hip({left_hip: {x:0, y:0}})}>0 left_hip</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setleft_knee({left_knee: {x:0, y:0}})}>0 left_knee</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setLeft_ankle({left_ankle: {x:0, y:0}})}>0 left_ankle</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setRight_hip({right_hip: {x:0, y:0}})}>0 right_hip</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setRight_knee({right_knee: {x:0, y:0}})}>0 right_knee</Button> <br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setRight_ankle({right_ankle: {x:0, y:0}})}>0 right_ankle</Button> <br/> <br/>
                         </Paper>
                     </Grid>
                 </Grid>

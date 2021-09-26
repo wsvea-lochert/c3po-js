@@ -118,9 +118,10 @@ const Datasets = () => {
     const [downloadLinks, setDownloadLinks] = useState(); // objects | use map to extract?
     const [fileInfo, setFileInfo] = useState();           // Array of strings.
     const [progress, setProgress] = useState();           // integer to track the marking progress of the dataset.
+    const [images, setImages] = useState([]);
     
     // clean image links
-    const [images, setImages] = useState();
+    const [imageData, setImageData] = useState();
 
     // controller states
     const [url, setUrl] = useState();                     // Url to get the dataset.
@@ -147,11 +148,14 @@ const Datasets = () => {
       // connect to real-time database to get the dataset
       database.ref("datasets").child(dir).get().then(function(snapshot){
         if(snapshot.exists()){
+          //console.log("testlog")
           // Setting the useStates to that the values can be used later.
           setDownloadLinks(snapshot.val().download_links)
           setFileInfo(snapshot.val().file_info)
           setProgress(snapshot.val().progress)
-          
+          //remove this if it throws an error
+          console.log(snapshot.val().dataset)
+          setImageData(snapshot.val().dataset)
         }
         else{
           console.log("No data available, check firebase or catalog name")
@@ -171,6 +175,7 @@ const Datasets = () => {
       
       //console.log(Object.keys(downloadLinks)); 
     }
+
 
     function showDownloadLinks(){
       if(dataLoaded){
@@ -219,9 +224,12 @@ const Datasets = () => {
                   
                   {images?.length > 0 && (
                     <>
+                    <Button variant="contained" color="primary" size="small" onClick={getData}>get data</Button>
+                    <Button variant="contained" color="primary" size="small" disabled={counter===images?.length-1} onClick={() => setCounter(counter+50)}>skip 50</Button>
                     <Button variant="contained" color="primary" size="small" disabled={counter===0} onClick={() => setCounter(counter-1)}>Prev</Button> <br/>
                     <Button variant="contained" color="primary" size="small" disabled={counter===images?.length-1} onClick={() => setCounter(counter+1)}>Next</Button>
-                    <ImageMarker image={images[counter]} image_name={fileInfo[counter]} imgCounter={counter}/>
+                    
+                    <ImageMarker image={images[counter]} image_name={fileInfo[counter]} imgCounter={counter} prev_pose={imageData['image'+(counter-1)]}/>
                     
                     
                     </>

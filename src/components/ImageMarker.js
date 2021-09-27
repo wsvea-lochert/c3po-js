@@ -475,21 +475,36 @@ function ImageMarker(props){
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={12} lg={12}>
                                     <h3>image name: {props.image_name}</h3>
-                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_wrist')}>left_wrist</Button> <span> x,y: ({left_wrist.left_wrist?.x}, {left_wrist.left_wrist?.y})</span> <br/> <br/>
-                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_elbow')}>left_elbow</Button> <span> x,y: ({left_elbow.left_elbow?.x}, {left_elbow.left_elbow?.y})</span><br/> <br/>
-                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_shoulder')}>left_shoulder</Button> <span> x,y: ({left_shoulder.left_shoulder?.x}, {left_shoulder.left_shoulder?.y})</span><br/> <br/>
-                                    <Button color='gray' variant="contained" onClick={() => setJoint('neck')}>neck</Button> <span> x,y: ({neck.neck?.x}, {neck.neck?.y})</span><br/> <br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    
                                     <Button color='gray' variant="contained" onClick={() => setJoint('head')}>head</Button> <span> x,y: ({head.head?.x}, {head.head?.y})</span><br/> <br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Button color='gray' variant="contained" onClick={() => setJoint('neck')}>neck</Button> <span> x,y: ({neck.neck?.x}, {neck.neck?.y})</span><br/> <br/>
+                                    
+                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_shoulder')}>left_shoulder</Button> <span> x,y: ({left_shoulder.left_shoulder?.x}, {left_shoulder.left_shoulder?.y})</span> 
                                     <Button color='secondary' variant="contained" onClick={() => setJoint('right_shoulder')}>right_shoulder</Button> <span> x,y: ({right_shoulder.right_shoulder?.x}, {right_shoulder.right_shoulder?.y})</span><br/> <br/>
+
+                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_elbow')}>left_elbow</Button> <span> x,y: ({left_elbow.left_elbow?.x}, {left_elbow.left_elbow?.y})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <Button color='secondary' variant="contained" onClick={() => setJoint('right_elbow')}>right_elbow</Button> <span> x,y: ({right_elbow.right_elbow?.x}, {right_elbow.right_elbow?.y})</span><br/> <br/>
-                                    <Button color='secondary' variant="contained" onClick={() => setJoint('right_writs')}>right_writs</Button> <span> x,y: ({right_writs.right_writs?.x}, {right_writs.right_writs?.y})</span><br/> <br/>
+                                    
+                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_wrist')}>left_wrist</Button> <span> x,y: ({left_wrist.left_wrist?.x}, {left_wrist.left_wrist?.y})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+                                    <Button color='secondary' variant="contained" onClick={() => setJoint('right_writs')}>right_wrist</Button> <span> x,y: ({right_writs.right_writs?.x}, {right_writs.right_writs?.y})</span><br/> <br/>
+                                    
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <Button color='gray' variant="contained" onClick={() => setJoint('torso')}>torso</Button> <span> x,y: ({torso.torso?.x}, {torso.torso?.y})</span><br/> <br/>
-                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_hip')}>left_hip</Button> <span> x,y: ({left_hip.left_hip?.x}, {left_hip.left_hip?.y})</span><br/> <br/>
-                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_knee')}>left_knee</Button> <span> x,y: ({left_knee.left_knee?.x}, {left_knee.left_knee?.y})</span><br/> <br/>
-                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_ankle')}>left_ankle</Button> <span> x,y: ({left_ankle.left_ankle?.x}, {left_ankle.left_ankle?.y})</span><br/> <br/>
+
+                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_hip')}>left_hip</Button> <span> x,y: ({left_hip.left_hip?.x}, {left_hip.left_hip?.y})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <Button color='secondary' variant="contained" onClick={() => setJoint('right_hip')}>right_hip</Button> <span> x,y: ({right_hip.right_hip?.x}, {right_hip.right_hip?.y})</span><br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_knee')}>left_knee</Button> <span> x,y: ({left_knee.left_knee?.x}, {left_knee.left_knee?.y})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <Button color='secondary' variant="contained" onClick={() => setJoint('right_knee')}>right_knee</Button> <span> x,y: ({right_knee.right_knee?.x}, {right_knee.right_knee?.y})</span><br/> <br/>
+                                    <Button color='primary' variant="contained" onClick={() => setJoint('left_ankle')}>left_ankle</Button> <span> x,y: ({left_ankle.left_ankle?.x}, {left_ankle.left_ankle?.y})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <Button color='secondary' variant="contained" onClick={() => setJoint('right_ankle')}>right_ankle</Button> <span> x,y: ({right_ankle.right_ankle?.x}, {right_ankle.right_ankle?.y})</span><br/> <br/>
+                                    
+                                    
+                                    
 
                                    {/* <Button color='primary' variant="contained" onClick={() => setJoint('topLeft')}>topLeft</Button> <span>topLeft: x,y: ({topLeft.topLeft?.x}, {topLeft.topLeft?.y})</span><br/> <br/>
                                     <Button color='primary' variant="contained" onClick={() => setJoint('bottomRight')}>bottomRight</Button> <span> x,y: ({bottomRight.bottomRight?.x}, {bottomRight.bottomRight?.y})</span><br/> <br/> */}

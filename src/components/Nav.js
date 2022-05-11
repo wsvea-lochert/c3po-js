@@ -163,18 +163,3 @@ const Nav = ({page}) => {
 }
 
 export default Nav
-
-/*
-        <nav>
-            <ul className="nav-links">
-                <Link style={navStyle} to="/Datasets">
-                <li>Datasets</li>
-                </Link>
-
-                <Link style={navStyle} to="/">
-                <li>Home</li>
-                </Link>
-            </ul>
-            <button onClick={handleLogout}>Sign out</button>
-        </nav>
-*/

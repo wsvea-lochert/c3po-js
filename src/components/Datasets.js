@@ -225,7 +225,7 @@ const Datasets = () => {
                   {images?.length > 0 && (
                     <>
                     <Button variant="contained" color="primary" size="small" onClick={getData}>get data</Button>
-                    <Button variant="contained" color="primary" size="small" disabled={counter===images?.length-1} onClick={() => setCounter(counter+50)}>skip 50</Button>
+                    <Button variant="contained" color="primary" size="small" disabled={counter===images?.length-1} onClick={() => setCounter(counter+1)}>skip 50</Button>
                     <Button variant="contained" color="primary" size="small" disabled={counter===0} onClick={() => setCounter(counter-1)}>Prev</Button> <br/>
                     <Button variant="contained" color="primary" size="small" disabled={counter===images?.length-1} onClick={() => setCounter(counter+1)}>Next</Button>
                     

@@ -452,8 +452,8 @@ function ImageMarker(props){
                                                                                                                                             ch={canvasHeight}/>
                                 </div>
                                 
-                                <h3>selected joint: ({selectedJoint})</h3>
-                                <h3>current coordinates: (x{Math.ceil(cordinates?.x)}, y{Math.ceil(cordinates?.y)})</h3>
+                                <h3>selected joint: ({selectedJoint}) <span> Image: {props.imgCounter}/2437</span></h3>
+                                <h3>current coordinates: (x{Math.ceil(cordinates?.x)}, y{Math.ceil(cordinates?.y)})</h3> 
                                 <Button color='primary' variant="contained" onClick={saveData}>save</Button> <br/> <br/>
                                { /*<Button color='primary' variant="contained" onClick={() => setCanvasHeight(500)}>500</Button> <br/><br/>*/}
                                 {/*<Button color='primary' variant="contained" onClick={() => setCanvasHeight(729)}>729</Button>*/}

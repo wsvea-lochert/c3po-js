@@ -24,7 +24,11 @@ npm install
 ## Firebase connection
 Before you are able to use the package you have to set up a Firebase instance with Firebase Storage, authentication (Email/password sign in method) and Real-Time database. To get started with Firebase follow this link: https://firebase.google.com/ 
 
-When your Firebase instances are up and ready you can move to the next step.
+When your Firebase instances you have to get the Firebase Config, an example of how it looks can be seen in the Figure bellow:
+
+![](/Fire.png)
+
+This has to be saved as fire.js in `C3PO-js/src/` to be able to connect to Firebase.
 
 ## Starting the service
 

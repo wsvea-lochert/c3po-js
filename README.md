@@ -2,7 +2,7 @@
 ![](/jsbanner.png)
 
 ## What is C3P0-JS?
-C3P0-Python is a web-based keypoint labeling tool for machine learning applications. It is a React service that provides a high-level interface that is easy to use and intuitive. The package was developed as a part of my master's thesis at Høgskolen i Østfold.
+C3P0-JS is a web-based keypoint labeling tool for machine learning applications. It is a React service that provides a high-level interface that is easy to use and intuitive. The package was developed as a part of my master's thesis at Høgskolen i Østfold.
 
 ## Installation
 To install the package, run the following command:
